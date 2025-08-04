@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:pomodoro_app/app/theme/theme.dart';
+import 'package:pomodoro_app/app/theme/theme_notifier.dart';
+import 'package:pomodoro_app/data/services/audio_service.dart';
+import 'package:pomodoro_app/presentation/features/timer/view/pomodoro_view.dart';
+import 'package:pomodoro_app/presentation/features/timer/viewmodel/pomodoro_viewmodel.dart';
+import 'package:provider/provider.dart';
+
+void main() async {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeNotifier(AppThemes.focusBackgroundColor),
+        ),
+        ChangeNotifierProvider(create: (_) => PomodoroViewModel()),
+        ChangeNotifierProvider(create: (_) => AudioService()),
+      ],
+
+      child: const MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    return MaterialApp(
+      title: 'Pomodoro Timer',
+      theme: themeNotifier.themeData,
+      home: const PomodoroScreen(),
+    );
+  }
+}
