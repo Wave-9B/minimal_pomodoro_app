@@ -1,3 +1,3 @@
 # pomodoro_app
 
-This is a minimal Pomodoro app with soft notification sound and light/dark theme.
+This is a minimal Pomodoro app made in Flutter, featuring a soft notification sound and a light/dark theme.
