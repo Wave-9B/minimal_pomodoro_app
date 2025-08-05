@@ -1,6 +1,6 @@
 # pomodoro_app
 
-This is a minimal Pomodoro app made in Flutter (Provider and MVVM architecture), featuring a soft notification sound and a light/dark theme.
+This is a minimal Pomodoro app made in Flutter (Provider and MVVM architecture), featuring a soft notification sound, neumorphism UI, and a light/dark theme.
 
 <img width="360" height="736" alt="Screenshot_630" src="https://github.com/user-attachments/assets/8e2d38c0-411b-483f-a37f-b03d300e4828" />
 
