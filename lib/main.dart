@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:pomodoro_app/app/theme/theme.dart';
 import 'package:pomodoro_app/app/theme/theme_notifier.dart';
 import 'package:pomodoro_app/data/services/audio_service.dart';
@@ -6,12 +7,19 @@ import 'package:pomodoro_app/presentation/features/timer/view/pomodoro_view.dart
 import 'package:pomodoro_app/presentation/features/timer/viewmodel/pomodoro_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+late Box myBox;
 void main() async {
+  // init hive
+  await Hive.initFlutter();
+
+  // open the box
+  myBox = await Hive.openBox("MY_BOX");
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => ThemeNotifier(AppThemes.focusBackgroundColor),
+          create: (_) => ThemeNotifier(AppThemes.focusBackgroundColor, myBox),
         ),
         ChangeNotifierProvider(create: (_) => PomodoroViewModel()),
         ChangeNotifierProvider(create: (_) => AudioService()),

@@ -60,7 +60,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
     int currentCycle = Provider.of<PomodoroViewModel>(context).currentCycle;
     return Scaffold(
       appBar: AppBar(title: Text('Pomodoro Timer')),
-    
+
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -130,13 +130,13 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
               ],
             ),
             Spacer(),
-            
+
             NeumorphicButton(
               //isButtonActive: themeNotifier.isDark,
               paddingSize: EdgeInsets.all(10),
-            
+
               onPressed: () => themeNotifier.switchTheme(),
-            
+
               child: themeNotifier.isDark
                   ? Icon(
                       Icons.dark_mode_outlined,
@@ -147,9 +147,9 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                       color: themeNotifier.themeData.colorScheme.primary,
                     ),
             ),
-            
+
             SizedBox(height: 60),
-            
+
             AnimatedOpacity(
               opacity: _devTextOpacity,
               duration: const Duration(seconds: 5),
