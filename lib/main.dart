@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:pomodoro_app/app/theme/theme.dart';
@@ -33,8 +35,10 @@ void main() async {
     ),
   );
   // init notification
-  NotificationService().initNotification();
-  NotificationService().requestNotificationPermission();
+  if (!Platform.isWindows) {
+    NotificationService().initNotification();
+    NotificationService().requestNotificationPermission();
+  }
 }
 
 class MyApp extends StatelessWidget {

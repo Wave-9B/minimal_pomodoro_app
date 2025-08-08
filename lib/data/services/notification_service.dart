@@ -35,7 +35,7 @@ class NotificationService {
     const initSettings = InitializationSettings(
       android: initSettingsAndroid,
       iOS: initSettingsiOS,
-      //windows: initSettingsWin,
+     // windows: initSettingsWin,
     );
 
     // init the notification plugin (After the each platform setup)
@@ -58,7 +58,10 @@ class NotificationService {
         color: color,
       ),
       iOS: DarwinNotificationDetails(presentSound: false),
-      //windows: WindowsNotificationDetails(),
+      // windows: WindowsNotificationDetails(
+      //   duration: WindowsNotificationDuration.short,
+      //   audio: WindowsNotificationAudio.silent(),
+      // ),
     );
   }
 
