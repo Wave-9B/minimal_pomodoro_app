@@ -32,7 +32,7 @@ class AudioService extends ChangeNotifier {
     } else {
       audioVol = 0;
     }
-    print ("new volume: $audioVol");
+    //print ("new volume: $audioVol");
     player.setVolume(audioVol);
     notifyListeners();
   }

@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:pomodoro_app/app/theme/theme_notifier.dart';
 import 'package:pomodoro_app/data/services/audio_service.dart';
 import 'package:pomodoro_app/data/services/notification_service.dart';
 import 'package:pomodoro_app/domain/pomodoro_rules.dart';
-import 'package:provider/provider.dart';
 
 // enum para os states do pomodoro
 enum PomodoroState { focus, shortBreak, longBreak, idle }
