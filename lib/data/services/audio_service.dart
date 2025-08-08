@@ -7,7 +7,7 @@ class AudioService extends ChangeNotifier {
   String shortAlarmPath = "sounds/short_alarm.mp3";
   String longAlarmPath = "sounds/long_alarm.mp3";
 
-  double audioVol = 0.3;
+  double audioVol = 1;
 
   //methods below will play the alarms sound for each pomodoro state
 
@@ -25,4 +25,17 @@ class AudioService extends ChangeNotifier {
     await player.setVolume(audioVol);
     await player.play(AssetSource(longAlarmPath));
   }
+
+  void changeVolume() {
+    if (audioVol == 0) {
+      audioVol = 1;
+    } else {
+      audioVol = 0;
+    }
+    print ("new volume: $audioVol");
+    player.setVolume(audioVol);
+    notifyListeners();
+  }
+
+  bool get isMuted => audioVol == 0;
 }

@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:pomodoro_app/app/theme/theme_notifier.dart';
 import 'package:pomodoro_app/data/services/audio_service.dart';
+import 'package:pomodoro_app/data/services/notification_service.dart';
 import 'package:pomodoro_app/domain/pomodoro_rules.dart';
+import 'package:provider/provider.dart';
 
 // enum para os states do pomodoro
 enum PomodoroState { focus, shortBreak, longBreak, idle }
@@ -26,11 +29,44 @@ class PomodoroViewModel extends ChangeNotifier {
   void timerTick(Timer timer) {
     if (_timeRemaining.inSeconds > 0) {
       _timeRemaining -= const Duration(seconds: 1);
+
+      // Atualiza noti com tempo restante
+      NotificationService().showNotification(
+        id: 0,
+        title: "Pomodoro Timer",
+        body: "${_currentStateFormatted()}: ${_formatDuration(_timeRemaining)}",
+        color: _currentStateFormatted() == "Focus"
+            ? Color.fromARGB(255, 133, 55, 55) // focus background color
+            : _currentStateFormatted() == "Short"
+            ? Color.fromARGB(255, 78, 134, 114) // short break background color
+            : Color.fromARGB(255, 60, 99, 128), // long break background color
+      );
     } else {
       // if time ended, switch pomodoro state
       _switchState();
     }
     notifyListeners(); // Notifica a UI a cada segundo
+  }
+
+  // Helper para formatar o tempo
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$minutes:$seconds";
+  }
+
+  String _currentStateFormatted() {
+    switch (_currentState) {
+      case PomodoroState.focus:
+        return "Focus";
+      case PomodoroState.shortBreak:
+        return "Short";
+      case PomodoroState.longBreak:
+        return "Long";
+      case PomodoroState.idle:
+        return "Idle";
+    }
   }
 
   void startOrPause() {
@@ -78,6 +114,7 @@ class PomodoroViewModel extends ChangeNotifier {
         _currentCycle++; // Incrementa o ciclo de foco concluído
         if (_currentCycle == PomodoroRules.cyclesBeforeLongBreak) {
           // Inicia uma pausa longa após N ciclos
+          _timer?.cancel();
           _currentState = PomodoroState.longBreak;
           _timeRemaining = PomodoroRules.longBreakDuration;
 
@@ -87,6 +124,7 @@ class PomodoroViewModel extends ChangeNotifier {
           onStateChanged?.call(_currentState);
         } else {
           // Inicia uma pausa curta
+          _timer?.cancel();
           _currentState = PomodoroState.shortBreak;
           _timeRemaining = PomodoroRules.shortBreakDuration;
 
@@ -98,6 +136,7 @@ class PomodoroViewModel extends ChangeNotifier {
       case PomodoroState.shortBreak:
       case PomodoroState.longBreak:
         // Depois de qualquer pausa, volta para o foco
+        _timer?.cancel();
         _currentState = PomodoroState.focus;
         _timeRemaining = PomodoroRules.focusDuration;
         // play(focus alarm)

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro_app/app/theme/theme.dart';
 import 'package:pomodoro_app/app/theme/theme_notifier.dart';
+import 'package:pomodoro_app/data/services/audio_service.dart';
 import 'package:pomodoro_app/presentation/features/timer/viewmodel/pomodoro_viewmodel.dart';
 import 'package:pomodoro_app/presentation/features/timer/widgets/pomodoro_panel.dart';
 import 'package:pomodoro_app/presentation/widgets/neumorph_button.dart';
@@ -131,21 +132,37 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
             ),
             Spacer(),
 
-            NeumorphicButton(
-              //isButtonActive: themeNotifier.isDark,
-              paddingSize: EdgeInsets.all(10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                NeumorphicButton(
+                  //isButtonActive: themeNotifier.isDark,
+                  paddingSize: EdgeInsets.all(10),
 
-              onPressed: () => themeNotifier.switchTheme(),
+                  onPressed: () => themeNotifier.switchTheme(),
 
-              child: themeNotifier.isDark
-                  ? Icon(
-                      Icons.dark_mode_outlined,
-                      color: themeNotifier.themeData.colorScheme.primary,
-                    )
-                  : Icon(
-                      Icons.light_mode_outlined,
+                  child: themeNotifier.isDark
+                      ? Icon(
+                          Icons.dark_mode_outlined,
+                          color: themeNotifier.themeData.colorScheme.primary,
+                        )
+                      : Icon(
+                          Icons.light_mode_outlined,
+                          color: themeNotifier.themeData.colorScheme.primary,
+                        ),
+                ),
+
+                Consumer<AudioService>(
+                  builder: (context, audioService, child) => NeumorphicButton(
+                    paddingSize: EdgeInsets.all(10),
+                    onPressed: () => audioService.changeVolume(),
+                    child: Icon(
+                      audioService.isMuted ? Icons.volume_off : Icons.volume_up,
                       color: themeNotifier.themeData.colorScheme.primary,
                     ),
+                  ),
+                ),
+              ],
             ),
 
             SizedBox(height: 60),
